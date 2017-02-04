@@ -1,0 +1,263 @@
+body {
+	margin-left:auto;
+	margin-right:auto;
+	font-family:Arial, Helvetica, sans-serif;
+	margin-top:0px;
+	padding:0px;
+}
+#main-container {
+	min-width: 700px;
+	max-width: 1024px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 90%;
+	border: 1px solid #000000;
+	background-color:#001A57;
+}
+header {
+	background-color: #001A57;
+	color: #fff;
+	font-family: "Palatino Linotype", Georgia, serif;
+	height: 160px;
+	padding: 5px;
+	border-bottom: 1px solid #000000;
+}
+#photo {
+	margin:5px;
+	float:left;
+}
+
+#profile-photo {border-radius: 7px;}
+#personal-info {
+	text-align:center;
+	margin-left: 160px;
+}
+#personal-info p {
+	margin: 0px;
+}
+main {
+	background-color: #ffffff;
+	margin: 0 0 0 180px;
+	padding: 10px;
+	border-left: 1px solid #000000;
+}
+header h1 {
+	text-align:center;
+	padding:0px;
+	margin:0px;
+	font-size: 4em;
+}
+#left-side-bar {
+	width: 180px;
+	margin-bottom: 0;
+	float: left;
+}
+nav ul {
+	list-style:none;
+	padding:0px;
+	margin-top:0px;
+}
+nav {
+	margin:auto;
+	text-align:center;
+	width:inherit;
+}
+nav li {
+	display:block;
+}
+nav a:link {
+	color: #000;
+}
+nav a:hover {
+	color: #000;
+	background:#fff;
+}
+nav a:visited {
+	color:#000;
+}
+nav a {
+	text-decoration:none;
+	padding: 10px;
+	background-color:#FCB362;
+	border-bottom:1px solid black;
+	display:block;
+	font-weight:bold;
+}
+section {
+	padding:15px;
+	margin-top:10px;
+}
+
+blockquote {
+	width: 500px;
+	padding-top:10px;
+}
+.quote-mark {
+	float: left;
+}
+
+h3#quote {
+	padding:10px;
+	margin-bottom:0px;
+}
+
+#zig-ziglar {
+	float:right;
+}
+/** FORM **/
+form {
+	background-color: #FCB362;
+	border: 1px solid #79815c;
+	border-radius: 7px;
+	margin: 10px;
+	font-family: "Lucida Sans", Tahomo, Verdana, Arial, sans serif;
+	font-size: .9em;
+}
+fieldset {
+	margin: 20px;
+	border-radius: 7px;
+	border: 1px solid grey;
+}
+legend {
+	margin-bottom: 5px;
+	font-family: "Palatino Linotype", Georgia, serif;
+	font-weight: bold;
+}
+#contact-info label {
+	float: left;
+	width: 100px;
+	margin-left: 10px;
+}
+input {
+	display: block;
+	width: 300px;
+	padding-left: 5px;
+}
+textarea {
+	margin-left: 10px;
+	display: block;
+	font-family: "Lucida Sans", Tahomo, Verdana, Arial, sans serif;
+	width:95%;
+}
+form p {
+	font-size: .8em;
+}
+
+.radio, .checkbox {
+	display: inline;
+	width: 30px;
+}
+
+.formButtonSection {
+	text-align:center;
+	padding: 10px;
+}
+
+.formButton {
+	font-weight: bold;
+	font-size: 1em;
+	font-family: "Palatino Linotype", Georgia, serif;
+	width: 100px;
+	margin-bottom: 5px;
+	display:inline
+}
+
+footer {
+	font-size: .70em;
+	font-style: italic;
+	text-align: center;
+	padding: 5px;
+	background-color: #001A57;
+	color: #FFF;
+	border-top: 1px solid #333;
+}
+.clear {
+	clear:both;
+}
+
+.games {
+	padding: 7px;
+	margin-right: 20px;
+	border:1px solid grey;
+	background-color: #FFF;
+}
+.shadow {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.5);
+	border-radius: 5px;
+}
+
+iframe {border-radius: 5px;}
+
+.wrappedElement {
+	border:1px solid grey;
+}
+.games-image-container {
+	padding:10px;
+	margin-top:10px;
+	margin-top:10px;
+	height: 250px;
+}
+
+.social-icons {
+	float: right;
+}
+
+.games-image-container li {display:inline;}
+
+main#games-bg {
+	color: yellow;
+}
+
+#games-bg {
+	background-image: url("../images/games-bg.jpg");
+	background-color: #cccccc;
+}
+
+#game-development a {
+	color: yellow;
+}
+
+
+.ui-widget-header {
+	border: 1px solid #aaaaaa;
+	background: #fcb362 !important;
+}
+
+
+
+#film-bg {
+	background-image: url("../images/film-backgrounds.jpg");
+	background-color: #cccccc;
+}
+
+main#film-bg {
+	padding-left:125px;
+	color: white;
+}
+
+#newsletter-bg {
+	background-image: url("../images/newsletter-bg.jpg");
+	background-color: #fff;
+	color: white;
+}
+
+#main-bg {
+	background-image: url("../images/main-bg.jpg");
+	background-color: #fff;
+	color: white;
+}
+
+
+#web-bg {
+	background-image: url("../images/web-bg.jpg");
+	background-color: #fff;
+	color: white;
+}
+
+#web-bg a {color:yellow;}
+
+#contact-bg {
+	background-image: url("../images/contact-bg.jpg");
+	background-color: #fff;
+	color: white;
+}

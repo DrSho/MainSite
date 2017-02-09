@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Contact Me Form</title>
+		<title>Contact Us Form</title>
 		<?php include ("scripts.php");?>
 	</head>
 	<body>

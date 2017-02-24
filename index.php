@@ -55,13 +55,10 @@ if (isset($_SESSION['user'])) {
                 </section>
 
         </div>
-        <footer>
-        <?php include "footer.php"; ?>
-        </footer>
 
     </div>
 
-
+    <?php include "footer.php"; ?>
     <script src="assets/jquery-1.11.3-jquery.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
 

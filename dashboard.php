@@ -73,29 +73,30 @@ if (($rowcount == 0)) {
                 <h1>My Health Exam History</h1>
             </div>
 
+            <div class="well">
 
-            <div class="panel-group" id="accordion">
+                <div class="panel-group" id="accordion">
 
-                <?php
-                $dashboard->showrecords($db_handle,$result);
+                    <?php
+                    $dashboard->showrecords($db_handle, $result);
 
-                ?>
-            </div>
-            <div>
-                <a href="record.php" class="btn btn-primary" role="button">Enter Health Data</a>
+                    ?>
+                </div>
+                <div>
+                    <a href="record.php" class="btn btn-primary" role="button">Enter Health Data</a>
 
-                <a href="print.php" class="btn <?= $disabled ?>" role="button">Print</a>
+                    <button class="btn <?= $disabled ?>" onclick="window.print();" role="button">Print</button>
+
+
+                </div>
 
             </div>
 
         </div>
-
-
-        <footer>
-            <?php include "footer.php"; ?>
-        </footer>
-
     </div>
+
+    <?php include "footer.php"; ?>
+
 
     <script src="assets/jquery-1.11.3-jquery.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>

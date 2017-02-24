@@ -26,16 +26,19 @@ $minZipCodeLength = 5;
 $fname = "";
 $mname = "";
 $lname = "";
-$address =  "";
-$address2 =  "";
-$city =  "";
-$state =  "";
-$zip =  "";
-$month =  "";
-$day =  "";
-$year =  "";
-$feet =  "";
-$inches =  "";
+$address = "";
+$address2 = "";
+$city = "";
+$state = "";
+$zip = "";
+$month = "";
+$day = "";
+$year = "";
+$feet = "";
+$inches = "";
+$gender = "";
+$maleSelected = "";
+$femaleSelected = "";
 
 //Current location
 $curLoc = "dashboard";
@@ -82,6 +85,9 @@ if (!isset($_POST['btn-update'])) {
     $year = $row['year'];
     $feet = $row['feet'];
     $inches = $row['inches'];
+    $gender = $row['gender'];
+
+    $gender == "M" ? $maleSelected = " checked " : $femaleSelected = " checked ";
 
 } else {
 
@@ -132,6 +138,9 @@ if (!isset($_POST['btn-update'])) {
     $year = trim($_POST['year']);
     $feet = trim($_POST['feet']);
     $inches = trim($_POST['inches']);
+    $gender = trim($_POST['gender']);
+
+    $gender == "M" ? $maleSelected = " checked " : $femaleSelected = " checked ";
 
 
     // basic first name validation
@@ -174,7 +183,7 @@ if (!isset($_POST['btn-update'])) {
 
         echo "EMAIL: " . $email . " - NEW: " . $newEmail;
 
-        if($_SESSION['email'] <> $newEmail) {
+        if ($_SESSION['email'] <> $newEmail) {
             // check email exist or not
             $query = "SELECT email FROM user_account WHERE email='$newEmail'";
             $count = $db_handle->numRows($query);
@@ -245,27 +254,27 @@ if (!isset($_POST['btn-update'])) {
     if (!$error) {
 
         //Insert into user_account table
-        if($updateEmail) {
-            $query = "UPDATE user_account SET email = '".$_SESSION['email']."' WHERE user_account_id='" . $_SESSION['userId'] . "'";
+        if ($updateEmail) {
+            $query = "UPDATE user_account SET email = '" . $_SESSION['email'] . "' WHERE user_account_id='" . $_SESSION['userId'] . "'";
             $result = $db_handle->updateQuery($query);
         }
 
         //Insert into user_password table
-        if($updatePass) {
-            $query = "UPDATE user_password SET password = '".$_SESSION['password']."' WHERE user_account_id='" . $_SESSION['userId'] . "'";
+        if ($updatePass) {
+            $query = "UPDATE user_password SET password = '" . $_SESSION['password'] . "' WHERE user_account_id='" . $_SESSION['userId'] . "'";
             $result = $db_handle->updateQuery($query);
         }
 
         //Insert into user_address table
         $query = "UPDATE user_address
-        SET first_name = '$fname', middle_name = '$mname', last_name = '$lname', address = '$address', address2 = '$address2',city = '$city',state = '$state',zip = '$zip',month='$month',day='$day',year='$year',feet='$feet',inches='$inches' WHERE user_account_id='".$_SESSION['userId']."'";
+        SET first_name = '$fname', middle_name = '$mname', last_name = '$lname', address = '$address', address2 = '$address2',city = '$city',state = '$state',zip = '$zip',month='$month',day='$day',year='$year',feet='$feet',inches='$inches', gender='$gender' WHERE user_account_id='" . $_SESSION['userId'] . "'";
 
         $result = $db_handle->updateQuery($query);
 
         if ($result) {
             $success = true;
             $successMSG = "Successfully updated!";
-            $_SESSION['dob'] = $year."/".$month."/".$day;
+            $_SESSION['dob'] = $year . "/" . $month . "/" . $day;
 
         } else {
             $errTyp = "danger";
@@ -331,153 +340,173 @@ if (!isset($_POST['btn-update'])) {
 
 
                             <div class="form-group">
-                                <h2 class="">My Profile</h2>
+                                <h2 class=""><?= $userName ?>'s Profile</h2>
+                                <p>Make any changes and click Update.</p>
                             </div>
 
                             <div class="form-group">
                                 <hr/>
                             </div>
 
-
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon"></span>
-                                    <input id="fname" type="text" name="fname" class="form-control"
-                                           placeholder="First Name"
-                                           maxlength="50" value="<?php echo $fname ?>" required/>
-
-                                    <input id="mname" type="text" name="mname" class="form-control" placeholder="Middle"
-                                           maxlength="5" value="<?php echo $mname ?>"/>
-
-                                    <input id="lname" type="text" name="lname" class="form-control"
-                                           placeholder="Last Name"
-                                           maxlength="50" value="<?php echo $lname ?>" required/>
-                                </div>
-                                <span class="text-danger"><?php echo $fnameError; ?></span>
-                                <span class="text-danger"><?php echo $mnameError; ?></span>
-                                <span class="text-danger"><?php echo $lnameError; ?></span>
-
-                            </div>
-
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon"></span>
-                                    <input type="email" name="email" class="form-control"
-                                           placeholder="Your Email (your.name@domain.com)"
-                                           maxlength="40" value="<?php echo $email ?>" required/>
-                                </div>
-                                <span class="text-danger"><?php echo $emailError; ?></span>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon"></span>
-                                    <input type="password" name="password" class="form-control"
-                                           placeholder="Password (min <?= $minPasswordLength ?> characters)"
-                                           maxlength="15"
-                                           required/>
-                                </div>
-                                <span class="text-danger"><?php echo $passwordError; ?></span>
-                            </div>
+                            <div class="well">
 
 
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon"></span>
-                                    <input type="text" name="address" class="form-control" placeholder="Street Address"
-                                           maxlength="25" value="<?php echo $address ?>" required/>
-                                </div>
-                                <span class="text-danger"><?php echo $addressError; ?></span>
-                            </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"></span>
+                                        <input id="fname" type="text" name="fname" class="form-control"
+                                               placeholder="First Name"
+                                               maxlength="50" value="<?php echo $fname ?>" required/>
 
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon"></span>
-                                    <input type="text" name="address2" class="form-control"
-                                           placeholder="Street Address 2 (e.g. Apt No, Suite No., Unit No.)"
-                                           maxlength="25" value="<?php echo $address2 ?>"/>
-                                </div>
-                                <span class="text-danger"><?php echo $address2Error; ?></span>
-                            </div>
+                                        <input id="mname" type="text" name="mname" class="form-control"
+                                               placeholder="Middle"
+                                               maxlength="5" value="<?php echo $mname ?>"/>
 
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon"></span>
-
-                                    <input id="city" type="text" name="city" class="form-control" placeholder="City"
-                                           maxlength="25" value="<?php echo $city ?>" required/>
-
-                                    <select id="state" name="state" class="form-control" required>
-                                        <?php
-                                        $cct->statesOptions($state);
-                                        ?>
-
-                                    </select>
-
-
-                                    <input id="zip" type="text" name="zip" class="form-control" placeholder="Zip Code"
-                                           maxlength="10" value="<?php echo $zip ?>" required/>
-                                </div>
-                                <span class="text-danger"><?php echo $cityError; ?></span>
-                                <span class="text-danger"><?php echo $stateError; ?></span>
-                                <span class="text-danger"><?php echo $zipError; ?></span>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="input-group">
-
-
-                                    Date of Birth:<br>
-
-                                    <select id="month" name="month" class="form-control" required>
-                                        <?php
-
-                                        $cct->monthsOptions($month);
-                                        ?>
-                                    </select>
-
-                                    <select id="day" name="day" class="form-control" required>
-                                        <?php
-                                        $cct->daysOptions($day);
-                                        ?>
-
-                                    </select>
-
-                                    <select id="year" name="year" class="form-control" required>
-                                        <?php
-                                        $cct->yearsOptions($year);
-                                        ?>
-
-                                    </select>
+                                        <input id="lname" type="text" name="lname" class="form-control"
+                                               placeholder="Last Name"
+                                               maxlength="50" value="<?php echo $lname ?>" required/>
+                                    </div>
+                                    <span class="text-danger"><?php echo $fnameError; ?></span>
+                                    <span class="text-danger"><?php echo $mnameError; ?></span>
+                                    <span class="text-danger"><?php echo $lnameError; ?></span>
 
                                 </div>
-                                <span class="text-danger"><?php echo $dobError; ?></span>
-                            </div>
 
-                            <div class="form-group">
-                                <div class="input-group">
-
-                                    <?= $inches?>
-                                    Height (feet and inches):<br>
-
-                                    <select id="feet" name="feet" class="form-control" required>
-                                        <?php
-                                        $cct->feetOptions($feet);
-
-                                        ?>
-
-                                    </select>
-
-                                    <select id="inches" name="inches" class="form-control" required>
-                                        <?php
-                                        $cct->inchesOptions($inches);
-
-                                        ?>
-
-                                    </select>
-
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"></span>
+                                        <input type="email" name="email" class="form-control"
+                                               placeholder="Your Email (your.name@domain.com)"
+                                               maxlength="40" value="<?php echo $email ?>" required/>
+                                    </div>
+                                    <span class="text-danger"><?php echo $emailError; ?></span>
                                 </div>
-                                <span class="text-danger"><?php echo $heightError; ?></span>
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"></span>
+                                        <input type="password" name="password" class="form-control"
+                                               placeholder="Password (min <?= $minPasswordLength ?> characters)"
+                                               maxlength="15"
+                                               required/>
+                                    </div>
+                                    <span class="text-danger"><?php echo $passwordError; ?></span>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"></span>
+                                        <input type="text" name="address" class="form-control"
+                                               placeholder="Street Address"
+                                               maxlength="25" value="<?php echo $address ?>" required/>
+                                    </div>
+                                    <span class="text-danger"><?php echo $addressError; ?></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"></span>
+                                        <input type="text" name="address2" class="form-control"
+                                               placeholder="Street Address 2 (e.g. Apt No, Suite No., Unit No.)"
+                                               maxlength="25" value="<?php echo $address2 ?>"/>
+                                    </div>
+                                    <span class="text-danger"><?php echo $address2Error; ?></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"></span>
+
+                                        <input id="city" type="text" name="city" class="form-control" placeholder="City"
+                                               maxlength="25" value="<?php echo $city ?>" required/>
+
+                                        <select id="state" name="state" class="form-control" required>
+                                            <?php
+                                            $cct->statesOptions($state);
+                                            ?>
+
+                                        </select>
+
+
+                                        <input id="zip" type="text" name="zip" class="form-control"
+                                               placeholder="Zip Code"
+                                               maxlength="10" value="<?php echo $zip ?>" required/>
+                                    </div>
+                                    <span class="text-danger"><?php echo $cityError; ?></span>
+                                    <span class="text-danger"><?php echo $stateError; ?></span>
+                                    <span class="text-danger"><?php echo $zipError; ?></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="input-group">
+
+
+                                        Date of Birth:<br>
+
+                                        <select id="month" name="month" class="form-control" required>
+                                            <?php
+
+                                            $cct->monthsOptions($month);
+                                            ?>
+                                        </select>
+
+                                        <select id="day" name="day" class="form-control" required>
+                                            <?php
+                                            $cct->daysOptions($day);
+                                            ?>
+
+                                        </select>
+
+                                        <select id="year" name="year" class="form-control" required>
+                                            <?php
+                                            $cct->yearsOptions($year);
+                                            ?>
+
+                                        </select>
+
+                                    </div>
+                                    <span class="text-danger"><?php echo $dobError; ?></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="input-group">
+
+                                        Height (feet and inches):<br>
+
+                                        <select id="feet" name="feet" class="form-control" required>
+                                            <?php
+                                            $cct->feetOptions($feet);
+
+                                            ?>
+
+                                        </select>
+
+                                        <select id="inches" name="inches" class="form-control" required>
+                                            <?php
+                                            $cct->inchesOptions($inches);
+
+                                            ?>
+
+                                        </select>
+
+                                    </div>
+                                    <span class="text-danger"><?php echo $heightError; ?></span>
+                                </div>
+
+                                <!-- Gender -->
+                                <div class="form-group">
+                                    <div class="input-group">
+
+                                        What is your gender?<br>
+
+                                        <input type="radio" name="gender" <?= $maleSelected ?> value="M"> Male
+                                        <input type="radio" name="gender" <?= $femaleSelected ?> value="F"> Female
+
+                                    </div>
+                                    <span class="text-danger"><?php echo $address2Error; ?></span>
+                                </div>
+
                             </div>
 
                             <div class="form-group">
@@ -501,14 +530,12 @@ if (!isset($_POST['btn-update'])) {
 
             </div>
         </div>
-        <footer>
-            <?php include "footer.php"; ?>
-        </footer>
-
     </div>
+
+    <?php include "footer.php"; ?>
     <script src="assets/jquery-1.11.3-jquery.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
 
     </body>
     </html>
-    <?php ob_end_flush(); ?>
+<?php ob_end_flush(); ?>

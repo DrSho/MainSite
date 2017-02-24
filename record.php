@@ -116,90 +116,95 @@ if (isset($_POST['btn-submit'])) {
                                 <hr/>
                             </div>
 
-                            <?php
+                            <div class="well">
 
-
-                            if (isset($errMSG)) {
-
-                                ?>
-                                <div class="form-group">
-                                    <div class="alert alert-danger">
-                                        <span class="glyphicon glyphicon-info-sign"></span> <?php echo $errMSG; ?>
-                                    </div>
-                                </div>
                                 <?php
-                            }
-                            ?>
 
-                            <!-- Date of exam -->
-                            <div class="form-group">
-                                <label for="date_exam" class="control-label col-sm-4">Date of Exam:</label>
 
-                                <div class="col-sm-5">
-                                    <input type="text" class="form-control" id="date_exam" name="date_exam"
-                                           placeholder="mm/dd/yyyy"
-                                           required onkeyup="
+                                if (isset($errMSG)) {
+
+                                    ?>
+                                    <div class="form-group">
+                                        <div class="alert alert-danger">
+                                            <span class="glyphicon glyphicon-info-sign"></span> <?php echo $errMSG; ?>
+                                        </div>
+                                    </div>
+                                    <?php
+                                }
+                                ?>
+
+                                <!-- Date of exam -->
+                                <div class="form-group">
+                                    <label for="date_exam" class="control-label col-sm-4">Date of Exam:</label>
+
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="date_exam" name="date_exam"
+                                               placeholder="mm/dd/yyyy"
+                                               required onkeyup="
         var v = this.value;
         if (v.match(/^\d{2}$/) !== null) {
             this.value = v + '/';
         } else if (v.match(/^\d{2}\/\d{2}$/) !== null) {
             this.value = v + '/';
         }" minlength="10" maxlength="10">
-                                </div>
-                            </div>
-
-
-                            <!-- Weight -->
-                            <div class="form-group">
-                                <label for="date_exam" class="control-label col-sm-4">Weight:</label>
-                                <div class="col-sm-5">
-                                    <input type="number" class="form-control" id="weight" name="weight"
-                                           placeholder="in lbs." min="1"
-                                           max="1000" required>
-
-                                </div>
-                            </div>
-
-
-                            <!-- LDL -->
-                            <div class="form-group">
-                                <label for="LDL" class="control-label col-sm-4">LDL Level:</label>
-                                <div class="col-sm-5">
-                                    <input type="number" class="form-control" id="LDL" name="LDL"
-                                           placeholder="Between 50-300 mmol/L"
-                                           min="50" max="300" required>
+                                    </div>
                                 </div>
 
-                            </div>
 
+                                <!-- Weight -->
+                                <div class="form-group">
+                                    <label for="date_exam" class="control-label col-sm-4">Weight:</label>
+                                    <div class="col-sm-6">
+                                        <input type="number" class="form-control" id="weight" name="weight"
+                                               placeholder="in lbs." min="1"
+                                               max="1000" required>
 
-                            <!-- HDL -->
-                            <div class="form-group">
-                                <label for="HDL" class="control-label col-sm-4">HDL Level:</label>
-                                <div class="col-sm-5">
-                                    <input type="number" class="form-control" id="HDL" name="HDL"
-                                           placeholder="Between 20-90 mmol/L"
-                                           min="20" max="90" required>
+                                    </div>
                                 </div>
 
-                            </div>
 
-                            <!-- Total Cholesterol -->
-                            <div class="form-group">
-                                <label for="cholesterol" class="control-label col-sm-4">Total Cholesterol:</label>
-                                <div class="col-sm-5">
-                                    <input type="number" class="form-control" id="cholesterol" name="cholesterol"
-                                           placeholder="Between 80-500 mmol/L" required min="80" max="500">
+                                <!-- LDL -->
+                                <div class="form-group">
+                                    <label for="LDL" class="control-label col-sm-4">LDL Level:</label>
+                                    <div class="col-sm-6">
+                                        <input type="number" class="form-control" id="LDL" name="LDL"
+                                               placeholder="Between 50-300 mmol/L"
+                                               min="50" max="300" required>
+                                    </div>
+
                                 </div>
 
-                            </div>
 
-                            <!-- Triglycerides -->
-                            <div class="form-group">
-                                <label for="triglycerides" class="control-label col-sm-4">Triglycerides:</label>
-                                <div class="col-sm-5">
-                                    <input type="number" class="form-control" id="triglycerides" name="triglycerides"
-                                           placeholder="Between 0-1000  mmol/L" min="0" max="1000" required>
+                                <!-- HDL -->
+                                <div class="form-group">
+                                    <label for="HDL" class="control-label col-sm-4">HDL Level:</label>
+                                    <div class="col-sm-6">
+                                        <input type="number" class="form-control" id="HDL" name="HDL"
+                                               placeholder="Between 20-90 mmol/L"
+                                               min="20" max="90" required>
+                                    </div>
+
+                                </div>
+
+                                <!-- Total Cholesterol -->
+                                <div class="form-group">
+                                    <label for="cholesterol" class="control-label col-sm-4">Total Cholesterol:</label>
+                                    <div class="col-sm-6">
+                                        <input type="number" class="form-control" id="cholesterol" name="cholesterol"
+                                               placeholder="Between 80-500 mmol/L" required min="80" max="500">
+                                    </div>
+
+                                </div>
+
+                                <!-- Triglycerides -->
+                                <div class="form-group">
+                                    <label for="triglycerides" class="control-label col-sm-4">Triglycerides:</label>
+                                    <div class="col-sm-6">
+                                        <input type="number" class="form-control" id="triglycerides"
+                                               name="triglycerides"
+                                               placeholder="Between 0-1000  mmol/L" min="0" max="1000" required>
+                                    </div>
+
                                 </div>
 
                             </div>
@@ -230,13 +235,9 @@ if (isset($_POST['btn-submit'])) {
 
         </div>
 
-
-        <footer>
-            <?php include "footer.php"; ?>
-        </footer>
-
     </div>
 
+    <?php include "footer.php"; ?>
     <script src="assets/jquery-1.11.3-jquery.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
 

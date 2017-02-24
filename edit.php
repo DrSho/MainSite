@@ -97,7 +97,7 @@ if (isset($_POST['btn-submit'])) {
 
                             <div class="form-group">
                                 <h1>EDIT</h1>
-                                <h3 class="">Make your changes below then click Submit.</h3>
+                                <h3 class="">Make your changes below then click Update.</h3>
                             </div>
 
                             <div class="form-group">
@@ -162,7 +162,6 @@ if (isset($_POST['btn-submit'])) {
                                         <input type="number" class="form-control" id="weight" name="weight"
                                                placeholder="in lbs." min="1"
                                                max="1000" required value="<?= $row['weight'] ?>">
-
                                     </div>
                                 </div>
 
@@ -224,7 +223,7 @@ if (isset($_POST['btn-submit'])) {
 
 
                             <div class="form-group">
-                                <button type="submit" class="btn btn-block btn-primary" name="btn-submit">Submit
+                                <button type="submit" class="btn btn-block btn-primary" name="btn-update">Update
                                 </button>
                             </div>
 
@@ -248,13 +247,9 @@ if (isset($_POST['btn-submit'])) {
 
         </div>
 
-
-        <footer>
-            <?php include "footer.php"; ?>
-        </footer>
-
     </div>
 
+    <?php include "footer.php"; ?>
     <script src="assets/jquery-1.11.3-jquery.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
 

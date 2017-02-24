@@ -336,7 +336,7 @@ if (!isset($_POST['btn-update'])) {
                     <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>"
                           autocomplete="off">
 
-                        <div class="col-md-12">
+                        <div class="col-md-18">
 
 
                             <div class="form-group">
@@ -419,7 +419,7 @@ if (!isset($_POST['btn-update'])) {
                                         <span class="input-group-addon"></span>
 
                                         <input id="city" type="text" name="city" class="form-control" placeholder="City"
-                                               maxlength="25" value="<?php echo $city ?>" required/>
+                                               maxlength="20" value="<?php echo $city ?>" required/>
 
                                         <select id="state" name="state" class="form-control" required>
                                             <?php
@@ -429,9 +429,9 @@ if (!isset($_POST['btn-update'])) {
                                         </select>
 
 
-                                        <input id="zip" type="text" name="zip" class="form-control"
+                                        <input id="zip" type="number" name="zip" class="form-control"
                                                placeholder="Zip Code"
-                                               maxlength="10" value="<?php echo $zip ?>" required/>
+                                               min="5" max="5" maxlength="5" value="<?php echo $zip ?>" required/>
                                     </div>
                                     <span class="text-danger"><?php echo $cityError; ?></span>
                                     <span class="text-danger"><?php echo $stateError; ?></span>

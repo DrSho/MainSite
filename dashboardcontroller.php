@@ -32,8 +32,8 @@ class DashboardController
 
     public function showrecords($db_handle, $result)
     {
-        $typeCounter = 0;
-        $highTypes[] = array();
+
+        // $highTypes[] = array();
 
         $dob = $this->getDOB($db_handle);
 
@@ -42,21 +42,24 @@ class DashboardController
             $this->norecords();
         } else {
 
-            echo "<p>Click a row for a detail view.</p>";
+            echo "<p>Click a date for a detail view.</p>";
 
 
             while ($row = $result->fetch_array()) {
                 $rows[] = $row;
             }
-            $rowCount = 1;
+            $rowCount = 0;
+
             foreach ($rows as $row) {
+
+                $colCount = 0;
                 $collapse = "collapse" . $rowCount;
                 ?>
 
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <div class="panel-title ">
-                            <?= $rowCount ?>.
+                            <?= $rowCount + 1 ?>.
                             <a data-toggle="collapse" data-parent="#accordion"
                                href="#<?= $collapse ?>"><?= $row['date'] ?></a>
 
@@ -64,7 +67,8 @@ class DashboardController
                                 <a href="edit.php?id=<?= $row['id'] ?>" class="btn btn-default btn-sm active"
                                    role="button">Edit</a>
                                 <a href="delete.php?id=<?= $row['id'] ?>" class="btn btn-default btn-sm active"
-                                   role="button" onclick="return confirm('Are you sure you want to delete this item?\nIt cannot be undone.');">Delete</a>
+                                   role="button"
+                                   onclick="return confirm('Are you sure you want to delete this item?\nIt cannot be undone.');">Delete</a>
                             </div>
 
                         </div>
@@ -103,7 +107,7 @@ class DashboardController
                                     </tr>
                                     <tr>
                                         <td><?= strtoupper($row['health_type2']) ?></td>
-                                        <td><?= $row['health_type2_level'] ?></td>
+                                        <td><?= $row['health_type2_level'] ?> mmol/L</td>
 
                                         <?php
                                         if ($row['health_type2_level'] >= 50 && $row['health_type2_level'] <= 99)
@@ -116,8 +120,8 @@ class DashboardController
                                             echo "<td class='warning'>" . strtoupper("High");
                                         else if ($row['health_type2_level'] >= 190 && $row['health_type2_level'] <= 300) {
                                             echo "<td class='danger'>" . strtoupper("Very High");
-                                            $highTypes[$typeCounter] = ($row['health_type2']);
-                                            $typeCounter++;
+                                            $highTypes[$rowCount][$colCount] = ($row['health_type2']);
+                                            $colCount++;
                                         }
                                         echo "</td>";
                                         ?>
@@ -125,11 +129,11 @@ class DashboardController
                                     </tr>
                                     <tr>
                                         <td><?= strtoupper($row['health_type3']) ?></td>
-                                        <td><?= $row['health_type3_level'] ?></td>
+                                        <td><?= $row['health_type3_level'] ?> mmol/L</td>
                                         <?php
                                         if ($row['health_type3_level'] >= 20 && $row['health_type3_level'] <= 39) {
-                                            $highTypes[$typeCounter] = ($row['health_type3']);
-                                            $typeCounter++;
+                                            $highTypes[$rowCount][$colCount] = ($row['health_type3']);
+                                            $colCount++;
                                             echo "<td class='danger'>" . strtoupper("Low (high heart disease risk)");
 
                                         } else if ($row['health_type3_level'] >= 40 && $row['health_type3_level'] <= 59)
@@ -141,7 +145,7 @@ class DashboardController
                                     </tr>
                                     <tr>
                                         <td><?= strtoupper($row['health_type1']) ?></td>
-                                        <td><?= $row['health_type1_level'] ?></td>
+                                        <td><?= $row['health_type1_level'] ?> mmol/L</td>
                                         <?php
                                         if ($row['health_type1_level'] >= 0 && $row['health_type1_level'] <= 149)
                                             echo "<td class='success'>" . strtoupper("Normal");
@@ -151,15 +155,15 @@ class DashboardController
                                             echo "<td class='warning'>" . strtoupper("High");
                                         else {
                                             echo "<td class='danger'>" . strtoupper("Very High");
-                                            $highTypes[$typeCounter] = ($row['health_type1']);
-                                            $typeCounter++;
+                                            $highTypes[$rowCount][$colCount] = ($row['health_type1']);
+                                            $colCount++;
                                         }
                                         echo "</td>";
                                         ?>
                                     </tr>
                                     <tr>
                                         <td><?= strtoupper($row['health_type4']) ?></td>
-                                        <td><?= $row['health_type4_level'] ?></td>
+                                        <td><?= $row['health_type4_level'] ?> mmol/L</td>
                                         <?php
                                         if ($row['health_type4_level'] >= 80 && $row['health_type4_level'] <= 200)
                                             echo "<td class='success'>" . strtoupper("Ideal");
@@ -167,8 +171,8 @@ class DashboardController
                                             echo "<td class='warning'>" . strtoupper("Borderline-high");
                                         else if ($row['health_type4_level'] >= 240 && $row['health_type4_level'] <= 500) {
                                             echo "<td class='danger'>" . strtoupper("High");
-                                            $highTypes[$typeCounter] = ($row['health_type4']);
-                                            $typeCounter++;
+                                            $highTypes[$rowCount][$colCount] = ($row['health_type4']);
+                                            $colCount++;
                                         }
                                         echo "</td>";
                                         ?>
@@ -177,36 +181,44 @@ class DashboardController
 
                             </div>
 
-                            <div class="panel-footer"><p><span style="color:#000;">Recommendation</span>:
+                            <div class="panel-footer"><p><span style="color:#000;"><b>Recommendation</b></span>:
                                     <?php
 
-                                    $count = sizeof($highTypes);
-                                    if ($count == 0 || $count == NULL) {
-                                        echo "Your health is excellent!  Keep doing what you're doing.";
+                                    if ($colCount == 0) {
+                                        $strMsg[$rowCount] = "Your health is excellent!  Keep doing what you're doing.";
                                     } else {
-                                        $str = "Your ";
-                                        for ($i = 0; $i < $count - 1; $i++) {
-                                            $str .= $highTypes[$i];
-                                            if ($i <> $count) {
-                                                $str .= ", ";
+                                        $strMsg[$rowCount] = "Your health is at risk.  Your ";
+                                        for ($i = 0; $i < $colCount; $i++) {
+                                            $strMsg[$rowCount] .= $highTypes[$rowCount][$i];
+                                            if ($colCount == 2) {
+                                                $strMsg[$rowCount] .= " and ";
+                                            } else if ($colCount > 2) {
+                                                if (($i + 1) < $colCount) {
+                                                    $strMsg[$rowCount] .= ", ";
+                                                } else {
+                                                    $strMsg[$rowCount] .= " and ";
+                                                }
                                             }
-
                                         }
 
-                                        if ($count > 1) {
-                                            $str .= " are too high or too low.";
+                                        if ($colCount > 1) {
+                                            $strMsg[$rowCount] .= " are too high or too low.";
                                         } else {
-                                            $str .= " is too high or too low.";
+                                            $strMsg[$rowCount] .= " is too high or too low.";
                                         }
 
-                                        $str .= "  Try to maintain an IDEAL level.";
+                                        $strMsg[$rowCount] .= "  Try to maintain an IDEAL level.";
 
-                                        echo $str;
                                     }
+
+                                    echo $strMsg[$rowCount];
+
 
                                     ?>
 
-                                </p></div>
+                                </p>
+                                <button class="btn btn-primary" onclick="window.print();" role="button">Print</button>
+                            </div>
                         </div>
                     </div>
                 </div>

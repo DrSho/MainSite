@@ -16,27 +16,27 @@
             <ul class="nav navbar-nav">
                 <li class="<?php
                 if ($curLoc == "index")
-                    echo 'active';
+                    echo 'active bold';
                 ?>"><a href="index.php">Home</a></li>
 
                 <li class="<?php if ($curLoc == "about")
-                    echo 'active';
+                    echo 'active bold';
                 ?>"><a href="about.php">About</a></li>
                 <li class="<?php
                 if ($curLoc == "contact")
-                    echo 'active';
+                    echo 'active bold';
                 ?>"><a href="contact.php">Contact</a></li>
                 <?php
 
                 if ((isset($_SESSION['user']))) { ?>
                     <li class="<?php
                     if ($curLoc == "dashboard")
-                        echo 'active';
+                        echo 'active bold';
                     ?>"><a href="dashboard.php">Dashboard</a></li>
                 <?php } else { ?>
                     <li class="<?php
                     if ($curLoc == "register")
-                        echo 'active';
+                        echo 'active bold';
 
                     ?>"><a href="register.php">Register</a></li>
                 <?php }  ?>

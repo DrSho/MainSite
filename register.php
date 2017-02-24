@@ -66,6 +66,8 @@ if (isset($_POST['btn-signup'])) {
     $feet = trim($_POST['feet']);
     $inches = trim($_POST['inches']);
 
+    $gender = trim($_POST['gender']);
+    $gender == "M" ? $maleSelected = " checked " : $femaleSelected = " checked ";
 
     // basic first name validation
     if (empty($fname)) {
@@ -192,8 +194,8 @@ if (isset($_POST['btn-signup'])) {
         //$result->close();
 
         //Insert into user_address table
-        $query = "INSERT INTO user_address(user_address_id,first_name,middle_name,last_name,address,address2,city,state,zip,month,day,year,feet,inches,user_account_id)
-              VALUES(NULL,'$fname','$mname','$lname','$address','$address2','$city','$state','$zip','$month','$day','$year','$feet','$inches','$uid')";
+        $query = "INSERT INTO user_address(user_address_id,first_name,middle_name,last_name,address,address2,city,state,zip,month,day,year,feet,inches,gender,user_account_id)
+              VALUES(NULL,'$fname','$mname','$lname','$address','$address2','$city','$state','$zip','$month','$day','$year','$feet','$inches','$gender','$uid')";
 
 
         $result = $db_handle->runQuery($query);
@@ -435,6 +437,21 @@ if (isset($_POST['btn-signup'])) {
                                 <span class="text-danger"><?php echo $heightError; ?></span>
                             </div>
 
+
+                            <!-- Gender -->
+                            <div class="form-group">
+                                <div class="input-group">
+
+                                    What is your gender?<br>
+
+                                    <input type="radio" name="gender" <?= $maleSelected ?> value="M" required> Male
+                                    <input type="radio" name="gender" <?= $femaleSelected ?> value="F" required> Female
+
+                                </div>
+                                <span class="text-danger"><?php echo $address2Error; ?></span>
+                            </div>
+
+
                             <div class="form-group">
                                 <hr/>
                             </div>
@@ -460,11 +477,9 @@ if (isset($_POST['btn-signup'])) {
 
             </div>
         </div>
-        <footer>
-            <?php include "footer.php"; ?>
-        </footer>
 
     </div>
+    <?php include "footer.php"; ?>
     <script src="assets/jquery-1.11.3-jquery.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
 

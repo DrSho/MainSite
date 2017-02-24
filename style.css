@@ -1,0 +1,168 @@
+@charset "utf-8";
+/* CSS Document */
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.container {
+    padding-bottom: 60px;
+}
+
+/* home page */
+#wrapper {
+    padding-top: 50px;
+    min-height: 100%;
+    /*position:relative;*/
+}
+
+.left-panel {
+    width: 640px;
+    clear: left;
+    float: left;
+    border: 1px solid #eee;
+}
+
+aside {
+    clear: right;
+    float: right;
+    width: 320px;
+    background: #fff;
+    padding: 7px;
+    border: 1px solid #eee;
+}
+
+footer {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    bottom: 0;
+    width: 100%;
+    height: 60px; /* Height of the footer */
+    background: #6cf;
+}
+
+/*
+
+#course {
+    position: relative;
+    float: left;
+}
+
+#copyright {
+    position: relative;
+    float: right;
+}
+*/
+
+.navbar {
+    height: 80px;
+}
+
+.navbar-nav > li > a {
+
+    line-height: 50px;
+    font-size: 16px;
+}
+
+.navbar-default {
+    background-color: #6cf;
+}
+
+#login-form {
+    margin: 5% auto;
+    max-width: 500px;
+}
+
+#fname, #lname {
+    width: 40%;
+}
+
+#city {
+    width: 260px;
+}
+
+#state {
+    width: 80px;
+    margin-left: 2px;
+    margin-right: 2px;
+    text-align: center;
+}
+
+#zip {
+    width: 100px;
+
+}
+
+#month, #day, #year, #feet, #inches {
+    width: 110px;
+    text-align: center;
+}
+
+select {
+    height: 34px;
+}
+
+/* register page */
+#mname {
+    width: 19%;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+
+.data-default {
+    padding: 7px 10px;
+    padding-top: 7px;
+    padding-right: 10px;
+    padding-bottom: 7px;
+    padding-left: 10px;
+    font-size: 16px;
+    line-height: 1.3333333;
+    border-radius: 6px;
+    background-color: #fff;
+    box-shadow: none;
+    border-width: 0px;
+}
+
+
+.data-normal {
+    padding: 10px 10px;
+    padding-top: 7px;
+    padding-right: 10px;
+    padding-bottom: 7px;
+    padding-left: 10px;
+    font-size: 16px;
+    line-height: 1.3333333;
+    border-radius: 6px;
+    background-color: #ccc;
+    box-shadow: none;
+    border-width: 1px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

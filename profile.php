@@ -12,33 +12,13 @@ $dashboard = new DashboardController();
 $account = new AccountController();
 $cct = new CommonController();
 
-$userName = "";
-$password = "";
 $updatePass = false;
 $updateEmail = false;
-$email = "";
 $error = false;
 $minPasswordLength = 6;
 $minAddressLength = 3;
 $minTextLength = 1;
 $minZipCodeLength = 5;
-
-$fname = "";
-$mname = "";
-$lname = "";
-$address = "";
-$address2 = "";
-$city = "";
-$state = "";
-$zip = "";
-$month = "";
-$day = "";
-$year = "";
-$feet = "";
-$inches = "";
-$gender = "";
-$maleSelected = "";
-$femaleSelected = "";
 
 //Current location
 $curLoc = "dashboard";
@@ -431,7 +411,7 @@ if (!isset($_POST['btn-update'])) {
 
                                         <input id="zip" type="number" name="zip" class="form-control"
                                                placeholder="Zip Code"
-                                               min="5" max="5" maxlength="5" value="<?php echo $zip ?>" required/>
+                                               maxlength="5" value="<?php echo $zip ?>" required/>
                                     </div>
                                     <span class="text-danger"><?php echo $cityError; ?></span>
                                     <span class="text-danger"><?php echo $stateError; ?></span>

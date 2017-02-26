@@ -2,14 +2,23 @@
 error_reporting(0);
 ob_start();
 session_start();
+
 require_once 'dbcontroller.php';
 
 $db_handle = new DBController();
 
 $curLoc = basename($_SERVER['PHP_SELF'], ".php");
 
-$userName = "Guest";
+if (isset($_SESSION['user'])) {
+    $userName = $_SESSION['user'];
+} else {
+    $userName = "Guest";
+}
+
+
 $error = false;
+$email = "";
+$password="";
 
 if (isset($_POST['btn-login'])) {
 
@@ -42,40 +51,27 @@ if (isset($_POST['btn-login'])) {
         $password = hash('sha256', $password); // password hashing using SHA256
 
         //Retrieve email
-        $query = "SELECT user_account_id, email FROM user_account WHERE email='$email'";
-        $result = $db_handle->runQuery($query);
+        $query = "SELECT * FROM user_account
+                    JOIN user_password
+                    ON user_account.user_account_id = user_password.user_account_id
+                    WHERE user_account.email='$email'";
 
-        $row = $result->fetch_array(MYSQLI_ASSOC);
-        $count = mysqli_num_rows($result); // if uname/pass correct it returns must be 1 row
-
-        $uid = $row['user_account_id'];
-        $userEmail = $row['email'];
-
-        //Retrieve password
-        $query = "SELECT password FROM user_password WHERE user_account_id='$uid'";
         $result = $db_handle->runQuery($query);
         $row = $result->fetch_array(MYSQLI_ASSOC);
+        $count = $db_handle->numRows($query); // if uname/pass correct it returns must be 1 row
 
-        $userPassword = $row['password'];
 
         //Compare the results
-        if ($count == 1 && $userPassword == $password) {
-            $_SESSION['userId'] = $uid;
-            $_SESSION['userEmail'] = $userEmail;
+        if ($count == 1) {
 
-            $query = "SELECT * FROM user_address WHERE user_account_id='$uid'";
-            $result = $db_handle->runQuery($query);
-            $row = $result->fetch_array(MYSQLI_ASSOC);
+            $_SESSION['userId'] = $row['user_account_id'];
+            $_SESSION['userEmail'] = $row['email'];
 
-            $_SESSION['user'] = $row['first_name'];
-            $_SESSION['full_name'] = $row['first_name'] . " " . $row['last_name'];
 
             header("Location: dashboard.php");
         } else {
             $errMSG = "Incorrect Credentials, Try again...";
         }
-
-        $result->close();
     }
 
 }
@@ -90,8 +86,10 @@ if (isset($_POST['btn-login'])) {
     </head>
     <body>
 
-    <div class="container">
+    <div id="wrapper">
         <?php include("navigation.php") ?>
+
+        <div class="container">
 
         <div id="login-form">
             <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" autocomplete="off">

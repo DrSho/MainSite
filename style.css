@@ -7,9 +7,11 @@
 }
 
 body {
-    margin: 0;
+    margin-left:auto;
+    margin-right:auto;
     padding: 0;
     height: 100%;
+    width:100%;
 }
 
 .container {
@@ -29,6 +31,7 @@ body {
     height: auto;
     margin: 0 auto -60px;
     padding-bottom: 60px;
+
 }
 
 .bold {
@@ -62,7 +65,12 @@ footer {
     background: #6cf;
 }
 
-
+.center-page{
+    margin-left:auto;
+    margin-right:auto;
+    width:1000px;
+    text-align: center;
+}
 
 .navbar {
     height: 80px;

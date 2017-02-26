@@ -1,6 +1,8 @@
 <?php
+error_reporting(0);
 ob_start();
 session_start();
+
 require_once 'dbcontroller.php';
 $userName = "Guest";
 $curLoc = basename($_SERVER['PHP_SELF'], ".php");

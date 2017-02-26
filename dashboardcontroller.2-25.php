@@ -6,100 +6,14 @@
  * Date: 2/23/2017
  * Time: 9:54 AM
  */
-
 class DashboardController
 {
-
-    public function loadBenchmark($db_handle, $account){
-        //$benchmark = new BenchmarkModel();
-
-        //Get type ID
-        $queryTypeId = "SELECT DISTINCT health_type_id, health_type FROM health_benchmark";
-        $resultTypeId = $db_handle->runQuery($queryTypeId);
-
-        while ($rowTypeId = $resultTypeId->fetch_array(MYSQLI_ASSOC)){
-
-            $queryData = "SELECT * FROM health_benchmark WHERE health_type_id = '".$rowTypeId['health_type_id']."'";
-            $resultData = $db_handle->runQuery($queryData);
-
-            while ($rowData = $resultData->fetch_array(MYSQLI_ASSOC)) {
-
-                $hData = ["condition"=>$rowData['display_result'], "min"=>$rowData['lowest_value'], "max"=>$rowData['highest_value']];
-
-            }
-
-
-            $hbArray[] = ["id"=>$rowTypeId['health_type_id'],$rowTypeId['health_type']=>$hData];
-        }
-
-        //Record benchmark data to array instance
-        $account->hbArray = ($hbArray);
-
-    }
-
-
-    public function loadData($db_handle, $account)
-    {
-
-        //$account = new AccountController();
-
-        //Get all user info
-        $query = "SELECT * FROM user_account
-                    JOIN user_password
-                    ON user_account.user_account_id = user_password.user_account_id
-                    JOIN user_address
-                    ON user_account.user_account_id = user_address.user_account_id
-                    WHERE user_account.user_account_id = '".$_SESSION['userId']."'";
-
-        $result = $db_handle->runQuery($query);
-        $row = $result->fetch_array(MYSQLI_ASSOC);
-
-        $account->user_account_id=($row['user_account_id']);
-        $account->email=($row['email']);
-        $account->password=($row['password']);
-        $account->gender=($row['gender']);
-        $account->first_name=($row['first_name']);
-        $account->middle_name=($row['middle_name']);
-        $account->last_name=($row['last_name']);
-        $account->address=($row['address']);
-        $account->address2=($row['address2']);
-        $account->city=($row['city']);
-        $account->state=($row['state']);
-        $account->zip=($row['zip']);
-        $account->month=($row['city']);
-        $account->day=($row['city']);
-        $account->year=($row['city']);
-        $account->feet=($row['feet']);
-        $account->inches=($row['inches']);
-
-/*        $tempAccount->setHealthType1Id($row['health_type1_id']);
-        $tempAccount->setHealthType2Id($row['health_type2_id']);
-        $tempAccount->setHealthType3Id($row['health_type3_id']);
-        $tempAccount->setHealthType4Id($row['health_type4_id']);
-        $tempAccount->setHealthType1($row['health_type1']);
-        $tempAccount->setHealthType2($row['health_type2']);
-        $tempAccount->setHealthType3($row['health_type3']);
-        $tempAccount->setHealthType4($row['health_type4']);
-        $tempAccount->setHealthType1Level($row['health_type1_id']);
-        $tempAccount->setHealthType1Id($row['health_type1_level']);
-        $tempAccount->setHealthType2Id($row['health_type2_level']);
-        $tempAccount->setHealthType3Id($row['health_type3_level']);
-        $tempAccount->setHealthType4Id($row['health_type4_level']);
-        $tempAccount->setWeight($row['weight']);
-        $tempAccount->setDate($row['date']);*/
-
-      //  $account = $tempAccount;
-
-
-    }
-
 
     public function norecords()
     {
         echo "<h1>You currently have no records.</h1>";
 
     }
-
 
     public function getDOB($db_handle)
     {
@@ -116,12 +30,12 @@ class DashboardController
         return $dob | null;
     }
 
-    public function showrecords($db_handle, $account, $result)
+    public function showrecords($db_handle, $result)
     {
 
-//        $benchmark = $account->getHbArray();
+        // $highTypes[] = array();
+
         $dob = $this->getDOB($db_handle);
-        $highTypes = "";
 
         if ((mysqli_num_rows($result) == 0)) {
 
@@ -162,6 +76,7 @@ class DashboardController
 
                     <div id="<?= $collapse ?>" class="panel-collapse collapse ">
 
+
                         <div class="well">
 
                             <div class="row alert">
@@ -187,29 +102,23 @@ class DashboardController
                                 <table style="background-color: #fff;" class="table table-hover table-bordered">
                                     <tr>
                                         <th>HEALTH TYPE</th>
-                                        <th>MY LEVEL
-                                            <small>(mmol/L)</small>
-                                        </th>
-                                        <th>IDEAL LEVEL
-                                            <small>(mmol/L)</small>
-                                        </th>
-                                        <th>MY CONDITION</th>
+                                        <th>LEVEL</th>
+                                        <th>CONDITION</th>
                                     </tr>
                                     <tr>
                                         <td><?= strtoupper($row['health_type2']) ?></td>
-                                        <td><?= $row['health_type2_level'] ?></td>
-                                        <td><?=LDL_MIN ?> - <?=LDL_MAX?></td>
+                                        <td><?= $row['health_type2_level'] ?> mmol/L</td>
 
                                         <?php
-                                        if ($row['health_type2_level'] >= LDL_MIN && $row['health_type2_level'] <= LDL1)
+                                        if ($row['health_type2_level'] >= 50 && $row['health_type2_level'] <= 99)
                                             echo "<td class='success'>" . strtoupper("Ideal");
-                                        else if ($row['health_type2_level'] > LDL1 && $row['health_type2_level'] <= LDL2)
+                                        else if ($row['health_type2_level'] >= 100 && $row['health_type2_level'] <= 129)
                                             echo "<td>" . strtoupper("Close to Ideal");
-                                        else if ($row['health_type2_level'] > LDL2 && $row['health_type2_level'] <= LDL3)
+                                        else if ($row['health_type2_level'] >= 130 && $row['health_type2_level'] <= 159)
                                             echo "<td class='info'>" . strtoupper("Borderline-high");
-                                        else if ($row['health_type2_level'] > LDL3 && $row['health_type2_level'] <= LDL4)
+                                        else if ($row['health_type2_level'] >= 160 && $row['health_type2_level'] <= 189)
                                             echo "<td class='warning'>" . strtoupper("High");
-                                        else if ($row['health_type2_level'] > LDL4 && $row['health_type2_level'] <= LDL5) {
+                                        else if ($row['health_type2_level'] >= 190 && $row['health_type2_level'] <= 300) {
                                             echo "<td class='danger'>" . strtoupper("Very High");
                                             $highTypes[$rowCount][$colCount] = ($row['health_type2']);
                                             $colCount++;
@@ -220,31 +129,29 @@ class DashboardController
                                     </tr>
                                     <tr>
                                         <td><?= strtoupper($row['health_type3']) ?></td>
-                                        <td><?= $row['health_type3_level'] ?></td>
-                                        <td><?=HDL_MIN ?> - <?=HDL_MAX?></td>
+                                        <td><?= $row['health_type3_level'] ?> mmol/L</td>
                                         <?php
-                                        if ($row['health_type3_level'] >= HDL_MIN && $row['health_type3_level'] <= HDL1) {
+                                        if ($row['health_type3_level'] >= 20 && $row['health_type3_level'] <= 39) {
                                             $highTypes[$rowCount][$colCount] = ($row['health_type3']);
                                             $colCount++;
                                             echo "<td class='danger'>" . strtoupper("Low (high heart disease risk)");
 
-                                        } else if ($row['health_type3_level'] > HDL1 && $row['health_type3_level'] <= HDL2)
+                                        } else if ($row['health_type3_level'] >= 40 && $row['health_type3_level'] <= 59)
                                             echo "<td class='warning'>" . strtoupper("Normal (but the higher the better)");
-                                        else if ($row['health_type3_level'] > HDL2 && $row['health_type3_level'] <= HDL3)
+                                        else if ($row['health_type3_level'] >= 60 && $row['health_type3_level'] <= 90)
                                             echo "<td class='success'>" . strtoupper("Best (offers protection against heart disease)");
                                         echo "</td>";
                                         ?>
                                     </tr>
                                     <tr>
                                         <td><?= strtoupper($row['health_type1']) ?></td>
-                                        <td><?= $row['health_type1_level'] ?></td>
-                                        <td><?=TGL_MIN ?> - <?=TGL_MAX?></td>
+                                        <td><?= $row['health_type1_level'] ?> mmol/L</td>
                                         <?php
-                                        if ($row['health_type1_level'] >= TGL_MIN && $row['health_type1_level'] <= TGL1)
+                                        if ($row['health_type1_level'] >= 0 && $row['health_type1_level'] <= 149)
                                             echo "<td class='success'>" . strtoupper("Normal");
-                                        else if ($row['health_type1_level'] > TGL1 && $row['health_type1_level'] <= TGL2)
+                                        else if ($row['health_type1_level'] >= 150 && $row['health_type1_level'] <= 199)
                                             echo "<td class='info'>" . strtoupper("Borderline-high");
-                                        else if ($row['health_type1_level'] > TGL2 && $row['health_type1_level'] <= TGL3)
+                                        else if ($row['health_type1_level'] >= 200 && $row['health_type1_level'] <= 499)
                                             echo "<td class='warning'>" . strtoupper("High");
                                         else {
                                             echo "<td class='danger'>" . strtoupper("Very High");
@@ -256,14 +163,13 @@ class DashboardController
                                     </tr>
                                     <tr>
                                         <td><?= strtoupper($row['health_type4']) ?></td>
-                                        <td><?= $row['health_type4_level'] ?></td>
-                                        <td><?=CHL_MIN ?> - <?=CHL_MAX?></td>
+                                        <td><?= $row['health_type4_level'] ?> mmol/L</td>
                                         <?php
-                                        if ($row['health_type4_level'] >= CHL_MIN && $row['health_type4_level'] <= CHL1)
+                                        if ($row['health_type4_level'] >= 80 && $row['health_type4_level'] <= 200)
                                             echo "<td class='success'>" . strtoupper("Ideal");
-                                        else if ($row['health_type4_level'] > CHL1 && $row['health_type4_level'] <= CHL2)
+                                        else if ($row['health_type4_level'] >= 201 && $row['health_type4_level'] <= 239)
                                             echo "<td class='warning'>" . strtoupper("Borderline-high");
-                                        else if ($row['health_type4_level'] > CHL2 && $row['health_type4_level'] <= CHL3) {
+                                        else if ($row['health_type4_level'] >= 240 && $row['health_type4_level'] <= 500) {
                                             echo "<td class='danger'>" . strtoupper("High");
                                             $highTypes[$rowCount][$colCount] = ($row['health_type4']);
                                             $colCount++;
@@ -279,7 +185,7 @@ class DashboardController
                                     <?php
 
                                     if ($colCount == 0) {
-                                        $strMsg[$rowCount] = NORMAL_HEALTH;
+                                        $strMsg[$rowCount] = "Your health is excellent!  Keep doing what you're doing.";
                                     } else {
                                         $strMsg[$rowCount] = "Your health is at risk.  Your ";
                                         for ($i = 0; $i < $colCount; $i++) {

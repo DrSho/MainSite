@@ -370,9 +370,9 @@ if (isset($_POST['btn-signup'])) {
                                     </select>
 
 
-                                    <input id="zip" type="number" name="zip" class="form-control"
+                                    <input id="zip" type="text" name="zip" class="form-control"
                                            placeholder="Zip Code"
-                                           min="5" max="5" maxlength="5" value="<?php echo $zip ?>" required/>
+                                            maxlength="5" value="<?php echo $zip ?>" required/>
                                 </div>
                                 <span class="text-danger"><?php echo $cityError; ?></span>
                                 <span class="text-danger"><?php echo $stateError; ?></span>

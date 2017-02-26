@@ -21,7 +21,7 @@ if (!isset($_SESSION['user'])) {
 //Current location
 $curLoc = "dashboard";
 
-if (isset($_POST['btn-submit'])) {
+if (isset($_POST['btn-update'])) {
 
     // clean user inputs to prevent sql injections
     $date_exam = ($_POST['date_exam']);
@@ -39,7 +39,7 @@ if (isset($_POST['btn-submit'])) {
     $query = "UPDATE user_health_record 
      SET health_type1_level = '$triglycerides', health_type2_level = '$LDL', health_type3_level = '$HDL', health_type4_level = '$cholesterol', weight = '$weight', date = '$date_exam' WHERE id='$id'";
 
-    $result = $db_handle->insertQuery($query);
+    $result = $db_handle->updateQuery($query);
 
     if ($result) {
         $success = true;

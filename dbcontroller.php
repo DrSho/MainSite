@@ -1,39 +1,38 @@
 <?php
 
 //session_start();
-
 //set and check for session timeout
-include ("session_timeout.php");
+include_once("session_timeout.php");
+include_once("constants.php");
 
-class DBController {
-    private $host = "mpwebservicesnet.ipagemysql.com";
-    private $user = "drsho";
-    private $password = "metcs633";
-    private $database = "drsho";
 
-//    private $host = "localhost";
-//    private $user = "root";
-//    private $password = "root";
-//    private $database = "drsho";
-//    private $conn;
+class DBController
+{
 
-    function __construct() {
+    private $conn;
+
+    function __construct()
+    {
 
         $this->connectDB();
 
     }
 
-    function closeDB(){
+    function closeDB()
+    {
         $this->conn->close();
     }
 
-    function connectDB() {
-        $this->conn = new mysqli($this->host, $this->user, $this->password, $this->database);
+    function connectDB()
+    {
+
+        $this->conn = new mysqli(DBHOST, DBUSER, DBPASS, DBDATABASE);
 
         if ($this->conn->connect_error) {
             die('Connect Error (' . $this->conn->connect_errno . ') '
                 . $$this->conn->connect_error);
         }
+
 
         if (mysqli_connect_error()) {
             die('Connect Error (' . mysqli_connect_errno() . ') '
@@ -41,27 +40,32 @@ class DBController {
         }
 
         $_SESSION['mysqli'] = $this->conn;
+
     }
 
 
-    function runQuery($query) {
+    function runQuery($query)
+    {
         $result = $this->conn->query($query);
 
-        if(!empty($result))
+        if (!empty($result))
             return $result;
     }
 
-    function lastInsert(){
+    function lastInsert()
+    {
         return $this->insert_id;
     }
 
-    function numRows($query) {
-        $result  = $this->conn->query($query);
+    function numRows($query)
+    {
+        $result = $this->conn->query($query);
         $rowcount = mysqli_num_rows($result);
         return $rowcount;
     }
 
-    function updateQuery($query) {
+    function updateQuery($query)
+    {
         $result = $this->conn->query($query);
         if (!$result) {
             die('Invalid query: ' . mysqli_error());
@@ -70,7 +74,8 @@ class DBController {
         }
     }
 
-    function insertQuery($query) {
+    function insertQuery($query)
+    {
         $result = $this->conn->query($query);
         if (!$result) {
             die('Invalid query: ' . mysqli_error());
@@ -79,7 +84,8 @@ class DBController {
         }
     }
 
-    function deleteQuery($query) {
+    function deleteQuery($query)
+    {
         $result = $this->conn->query($query);
         if (!$result) {
             die('Invalid query: ' . mysqli_error());

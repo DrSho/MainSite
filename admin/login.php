@@ -2,14 +2,15 @@
 error_reporting(0);
 ob_start();
 session_start();
-include_once("config.php");
-require_once 'include/dbcontroller.php';
+include_once("../config.php");
+require_once ("../include/dbcontroller.php");
+
 
 $db_handle = new DBController();
 
 $curLoc = basename($_SERVER['PHP_SELF'], ".php");
 
-if (isset($_SESSION['user'])) {
+if (isset($_SESSION['admin'])) {
     $userName = $_SESSION['user'];
 } else {
     $userName = "Guest";
@@ -51,24 +52,20 @@ if (isset($_POST['btn-login'])) {
         $password = hash('sha256', $password); // password hashing using SHA256
 
         //Retrieve email
-        $query = "SELECT * FROM user_account
-                    JOIN user_password
-                    ON user_account.user_account_id = user_password.user_account_id
-                    WHERE user_account.email='$email'";
+        $query = "SELECT * FROM admin WHERE email='$email'";
 
         $result = $db_handle->runQuery($query);
         $row = $result->fetch_array(MYSQLI_ASSOC);
         $count = $db_handle->numRows($query); // if uname/pass correct it returns must be 1 row
 
-
         //Compare the results
         if ($count == 1) {
 
-            $_SESSION['userId'] = $row['user_account_id'];
+            $_SESSION['userId'] = $row['id'];
             $_SESSION['userEmail'] = $row['email'];
+            $_SESSION['admin'] = "admin";
 
-
-            header("Location: dashboard.php");
+            header("Location: index.php");
         } else {
             $errMSG = "Incorrect Credentials, Try again...";
         }
@@ -80,14 +77,19 @@ if (isset($_POST['btn-login'])) {
     <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <title>Dr. Sho - Login & Registration System</title>
-        <link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css"/>
-        <link rel="stylesheet" href="style.css" type="text/css"/>
+        <title>Dr. Sho - Admin Login System</title>
+        <link rel="stylesheet" href="../assets/css/bootstrap.min.css" type="text/css"/>
+        <link rel="stylesheet" href="../style.css" type="text/css"/>
+        <link rel="stylesheet" href="admin.css" type="text/css"/>
+
     </head>
     <body>
 
     <div id="wrapper">
-        <?php include("include/navigation.php") ?>
+
+        <?php
+
+        include("include/navigation.php") ?>
 
         <div class="container">
 
@@ -97,7 +99,7 @@ if (isset($_POST['btn-login'])) {
                 <div class="col-md-12">
 
                     <div class="form-group">
-                        <h2 class="">Sign In.</h2>
+                        <h2 class="">Admin Sign In</h2>
                     </div>
 
                     <div class="form-group">
@@ -140,7 +142,7 @@ if (isset($_POST['btn-login'])) {
                     </div>
 
                     <div class="form-group">
-                        <button type="submit" class="btn btn-block btn-primary" name="btn-login">Sign In</button>
+                        <button type="submit" class="btn btn-block btn-warning" name="btn-login">Sign In</button>
                     </div>
 
                     <div class="form-group">
@@ -157,10 +159,10 @@ if (isset($_POST['btn-login'])) {
         </div>
     </div>
 
-    <?php include "include/footer.php"; ?>
+    <?php include "../include/footer.php"; ?>
 
-    <script src="assets/jquery-1.11.3-jquery.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="../assets/jquery-1.11.3-jquery.min.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
     </body>
     </html>
 <?php ob_end_flush(); ?>

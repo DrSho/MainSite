@@ -2,19 +2,19 @@
 error_reporting(0);
 ob_start();
 session_start();
-include_once("config.php");
-require_once 'dbcontroller.php';
-require_once 'dashboardcontroller.php';
+include_once("../config.php");
+require_once '../include/dbcontroller.php';
+require_once '../include/dashboardcontroller.php';
 
 $db_handle = new DBController();
 $dashboard = new DashboardController();
 
-
 $userName = "";
+$recordID = $_GET['id'];
 
 // if session is not set this will redirect to home page
-if (!isset($_SESSION['user'])) {
-    header("Location: index.php");
+if (!isset($_SESSION['admin'])) {
+    header("Location: ../index.php");
     exit;
 } else {
     $userName = $_SESSION['user'];
@@ -23,41 +23,29 @@ if (!isset($_SESSION['user'])) {
 //Current location
 $curLoc = "dashboard";
 
-
-if (isset($_POST['btn-submit'])) {
-
+if (isset($_POST['btn-update'])) {
 
     // clean user inputs to prevent sql injections
     $date_exam = ($_POST['date_exam']);
-
     $date_exam = date_create_from_format('m/d/Y', $date_exam);
     $date_exam = $date_exam->format('Y-m-d');
-
 
     $weight = ($_POST['weight']);
     $LDL = ($_POST['LDL']);
     $HDL = ($_POST['HDL']);
     $cholesterol = ($_POST['cholesterol']);
     $triglycerides = ($_POST['triglycerides']);
+    $id = $_POST['id'];
 
-    //Insert into user_account table
+    //Update table
+    $query = "UPDATE user_health_record 
+     SET health_type1_level = '$triglycerides', health_type2_level = '$LDL', health_type3_level = '$HDL', health_type4_level = '$cholesterol', weight = '$weight', date = '$date_exam' WHERE id='$id'";
 
-    $healthTypes = array(1 => "Triglycerides", 2 => "LDL", 3 => "HDL", 4 => "Cholesterol");
-    $healthTypeID = array();
-
-    for ($i = 0; $i < count($healthTypes); $i++) {
-        $healthTypeID[$i] = array_keys($healthTypes)[$i];
-    }
-
-    $query = "INSERT INTO user_health_record (id, user_account_id, health_type1_id, health_type2_id, health_type3_id, health_type4_id, health_type1, health_type2, health_type3, health_type4, health_type1_level, health_type2_level, health_type3_level, health_type4_level, weight, date) VALUES (NULL, '" . $_SESSION['userId'] . "', '$healthTypeID[0]', '$healthTypeID[1]', '$healthTypeID[2]', '$healthTypeID[3]', '$healthTypes[1]', '$healthTypes[2]', '$healthTypes[3]', '$healthTypes[4]', '$triglycerides', '$LDL', '$HDL', '$cholesterol', '$weight', '$date_exam')";
-
-
-    $result = $db_handle->runQuery($query);
-
+    $result = $db_handle->updateQuery($query);
 
     if ($result) {
         $success = true;
-        $successMSG = "Successfully added!";
+        $successMSG = "Successfully updated!";
     } else {
         $errType = "danger";
         $errMSG = "Something went wrong, try again later...";
@@ -70,9 +58,10 @@ if (isset($_POST['btn-submit'])) {
     <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <title>Health Data</title>
-        <link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css"/>
-        <link rel="stylesheet" href="style.css" type="text/css"/>
+        <title>Edit Health Data</title>
+        <link rel="stylesheet" href="../assets/css/bootstrap.min.css" type="text/css"/>
+        <link rel="stylesheet" href="../style.css" type="text/css"/>
+        <link rel="stylesheet" href="admin.css" type="text/css"/>
 
     </head>
     <body>
@@ -80,7 +69,7 @@ if (isset($_POST['btn-submit'])) {
 
     <div id="wrapper">
 
-        <?php include("navigation.php") ?>
+        <?php include("include/navigation.php") ?>
 
         <div class="container">
 
@@ -91,13 +80,15 @@ if (isset($_POST['btn-submit'])) {
                 <?php
 
                 if (isset($success) && $success) {
+
                     ?>
                     <div class="form-group">
                         <div class="alert alert-success">
                             <span class="glyphicon glyphicon-info-sign"></span> <?php echo $successMSG; ?>
                         </div>
 
-                        <a href="dashboard.php" class="btn  btn-primary " role="button">Dashboard</a>
+                        <a href="index.php" class="btn  btn-primary " role="button">Dashboard</a>
+                        <a href="details.php?id=<?=$_POST['patientID']?>" class="btn  btn-primary " role="button">Back to Details</a>
 
                     </div>
                     <?php
@@ -110,7 +101,8 @@ if (isset($_POST['btn-submit'])) {
 
 
                             <div class="form-group">
-                                <h2 class="">Complete the form below.</h2>
+                                <h1>Edit</h1>
+                                <h3 class="">Make your changes below then click Update.</h3>
                             </div>
 
                             <div class="form-group">
@@ -132,34 +124,56 @@ if (isset($_POST['btn-submit'])) {
                                     </div>
                                     <?php
                                 }
+
+                                $query = "SELECT * FROM user_health_record WHERE id='$recordID'";
+                                $result = $db_handle->runQuery($query);
+                                $row = $result->fetch_array(MYSQLI_ASSOC);
+
+                                $date_exam = date_create_from_format('Y-m-d', $row['date']);
+                                $date_exam = $date_exam->format('m/d/Y');
+
+                                $query2 = "SELECT user_account_id, first_name, last_name, gender FROM user_address WHERE user_account_id = '".$_SESSION['patientID']."'";
+                                $result2 = $db_handle->runQuery($query2);
+                                $row2 = $result2->fetch_array(MYSQLI_ASSOC);
+
                                 ?>
+
+                                <p style="float:right;"><b>Patient ID:</b> <?=$_SESSION['patientID']?></p>
+                                <p><b>Patient Name:</b> <?=$row2['first_name']?> <?=$row2['last_name']?> (<?=$row2['gender']?>)</p>
+                                <br>
 
                                 <!-- Date of exam -->
                                 <div class="form-group">
                                     <label for="date_exam" class="control-label col-sm-4">Date of Exam:</label>
 
-                                    <div class="col-sm-6">
+                                    <div class="input-group col-sm-5">
+                                        <span class="input-group-addon"><span
+                                                    class="glyphicon glyphicon-edit"></span></span>
                                         <input type="text" class="form-control" id="date_exam" name="date_exam"
                                                placeholder="mm/dd/yyyy"
-                                               required onkeyup="
+
+                                               onkeyup="
         var v = this.value;
         if (v.match(/^\d{2}$/) !== null) {
             this.value = v + '/';
         } else if (v.match(/^\d{2}\/\d{2}$/) !== null) {
             this.value = v + '/';
-        }" minlength="10" maxlength="10">
+        }"
+
+                                               required value="<?= $date_exam ?>" minlength="10" maxlength="10">
+
                                     </div>
                                 </div>
-
 
                                 <!-- Weight -->
                                 <div class="form-group">
                                     <label for="date_exam" class="control-label col-sm-4">Weight:</label>
-                                    <div class="col-sm-6">
+                                    <div class="input-group col-sm-5">
+                                        <span class="input-group-addon"><span
+                                                    class="glyphicon glyphicon-edit"></span></span>
                                         <input type="number" class="form-control" id="weight" name="weight"
                                                placeholder="in lbs." min="1"
-                                               max="1000" >
-
+                                               max="1000" required value="<?= $row['weight'] ?>">
                                     </div>
                                 </div>
 
@@ -167,10 +181,12 @@ if (isset($_POST['btn-submit'])) {
                                 <!-- LDL -->
                                 <div class="form-group">
                                     <label for="LDL" class="control-label col-sm-4">LDL Level:</label>
-                                    <div class="col-sm-6">
+                                    <div class="input-group col-sm-5">
+                                        <span class="input-group-addon"><span
+                                                    class="glyphicon glyphicon-edit"></span></span>
                                         <input type="number" class="form-control" id="LDL" name="LDL"
                                                placeholder="Between 50-300 mmol/L"
-                                               min="50" max="300" >
+                                               min="50" max="300" required value="<?= $row['health_type2_level'] ?>">
                                     </div>
 
                                 </div>
@@ -179,10 +195,12 @@ if (isset($_POST['btn-submit'])) {
                                 <!-- HDL -->
                                 <div class="form-group">
                                     <label for="HDL" class="control-label col-sm-4">HDL Level:</label>
-                                    <div class="col-sm-6">
+                                    <div class="input-group col-sm-5">
+                                        <span class="input-group-addon"><span
+                                                    class="glyphicon glyphicon-edit"></span></span>
                                         <input type="number" class="form-control" id="HDL" name="HDL"
                                                placeholder="Between 20-90 mmol/L"
-                                               min="20" max="90" >
+                                               min="20" max="90" required value="<?= $row['health_type3_level'] ?>">
                                     </div>
 
                                 </div>
@@ -190,9 +208,12 @@ if (isset($_POST['btn-submit'])) {
                                 <!-- Total Cholesterol -->
                                 <div class="form-group">
                                     <label for="cholesterol" class="control-label col-sm-4">Total Cholesterol:</label>
-                                    <div class="col-sm-6">
+                                    <div class="input-group col-sm-5">
+                                        <span class="input-group-addon"><span
+                                                    class="glyphicon glyphicon-edit"></span></span>
                                         <input type="number" class="form-control" id="cholesterol" name="cholesterol"
-                                               placeholder="Between 80-500 mmol/L"  min="80" max="500">
+                                               placeholder="Between 80-500 mmol/L" required min="80" max="500"
+                                               value="<?= $row['health_type4_level'] ?>">
                                     </div>
 
                                 </div>
@@ -200,23 +221,21 @@ if (isset($_POST['btn-submit'])) {
                                 <!-- Triglycerides -->
                                 <div class="form-group">
                                     <label for="triglycerides" class="control-label col-sm-4">Triglycerides:</label>
-                                    <div class="col-sm-6">
+                                    <div class="input-group col-sm-5">
+                                        <span class="input-group-addon"><span
+                                                    class="glyphicon glyphicon-edit"></span></span>
                                         <input type="number" class="form-control" id="triglycerides"
                                                name="triglycerides"
-                                               placeholder="Between 0-1000  mmol/L" min="0" max="1000" >
+                                               placeholder="Between 0-1000  mmol/L" min="0" max="1000" required
+                                               value="<?= $row['health_type1_level'] ?>">
                                     </div>
 
                                 </div>
-
                             </div>
 
 
                             <div class="form-group">
-                                <hr/>
-                            </div>
-
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-block btn-primary" name="btn-submit">Submit
+                                <button type="submit" class="btn btn-block btn-primary" name="btn-update">Update
                                 </button>
                             </div>
 
@@ -224,12 +243,17 @@ if (isset($_POST['btn-submit'])) {
                                 <hr/>
                             </div>
 
+                            <input type="hidden" name="patientID" value="<?= $_SESSION['patientID'] ?>"
+
 
                         </div>
 
+
                     </form>
 
-                <?php } ?>
+                    <?php
+
+                } ?>
 
             </div>
 
@@ -238,10 +262,14 @@ if (isset($_POST['btn-submit'])) {
 
     </div>
 
-    <?php include "footer.php"; ?>
-    <script src="assets/jquery-1.11.3-jquery.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
+    <?php include "../include/footer.php"; ?>
+    <script src="../assets/jquery-1.11.3-jquery.min.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
 
     </body>
     </html>
-<?php ob_end_flush(); ?>
+<?php
+
+$db_handle->closeDB();
+
+ob_end_flush(); ?>

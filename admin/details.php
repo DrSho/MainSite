@@ -2,48 +2,55 @@
 error_reporting(0);
 ob_start();
 session_start();
-include_once("config.php");
-require_once 'include/dbcontroller.php';
-require_once 'include/accountcontroller.php';
-require_once 'include/dashboardcontroller.php';
+include_once("../config.php");
+require_once '../include/dbcontroller.php';
+require_once '../include/accountcontroller.php';
+require_once '../include/dashboardcontroller.php';
+require_once 'include/admincontroller.php';
+
 
 // if session is not set this will redirect to home page
-if (!isset($_SESSION['userId']) || isset($_SESSION['admin'])) {
-    header("Location: index.php");
+if (!isset($_SESSION['admin'])) {
+    header("Location: ../index.php");
     exit;
 }
 
 $db_handle = new DBController();
 $dashboard = new DashboardController();
 $account = new AccountController();
+$admin = new AdminController();
 
 $_SESSION['account'] = $account;
 
 //Load data to class instances
+$admin->loadData($db_handle);
 $dashboard->loadData($db_handle,$account);
-$dashboard->loadBenchmark($db_handle,$account);
 
-$_SESSION['user'] = $account->first_name;
-$_SESSION['userFullName'] = $account->first_name . " " . $account->last_name;
+$_SESSION['user'] = $admin->getAdminFirstName();
+$_SESSION['userFullName'] = $admin->getAdminFirstName() . " " . $admin->getAdminLastName();
 
 $userName = $_SESSION['user'];
+$_SESSION['patientID'] = htmlspecialchars($_GET['id']);
+$patientId = $_SESSION['patientID'];
 
-$curLoc = basename($_SERVER['PHP_SELF'], ".php");
+$curLoc = "index";
 
 //Retrieve patient records
+//Retrieve patient records
 $query = "SELECT * FROM user_health_record 
-                    WHERE user_account_id = '" . $_SESSION[userId] . "' 
+                    WHERE user_account_id = '$patientId' 
                     ORDER BY date ASC";
 
 $result = $db_handle->runQuery($query);
 
 $rowcount = mysqli_num_rows($result);
 
+
 //disable button or links
 $disabled = "btn-primary";
 //If no entry then no need to print
 if (($rowcount == 0)) {
-    $disabled = "btn-default disabled";
+    $disabled = "btn-default disabled hidden";
 }
 
 ?>
@@ -52,9 +59,10 @@ if (($rowcount == 0)) {
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <title>Welcome - <?php echo $userName; ?></title>
-        <?php //include("scripts.php"); ?>
-        <link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css"/>
-        <link rel="stylesheet" href="style.css" type="text/css"/>
+        <link rel="stylesheet" href="../assets/css/bootstrap.min.css" type="text/css"/>
+        <link rel="stylesheet" href="../style.css" type="text/css"/>
+        <link rel="stylesheet" href="admin.css" type="text/css"/>
+
 
         <script>
             function myFunction() {
@@ -80,10 +88,12 @@ if (($rowcount == 0)) {
         <div class="container">
 
             <div class="page-header">
-                <h1><?= $account->first_name?>'s Health Exam History</h1>
+                <h1>Admin Dashboard</h1>
             </div>
 
             <div class="well">
+
+                <h3>Click a date for a detail view.</h3>
 
                 <div class="panel-group" id="accordion">
 
@@ -93,8 +103,8 @@ if (($rowcount == 0)) {
                     ?>
                 </div>
                 <div>
-                    <a href="record.php" class="btn btn-primary" role="button">Enter Health Data</a>
 
+                    <button class="btn btn-primary" onclick="window.history.back();" role="button">Go Back</button>
                     <button class="btn <?= $disabled ?>" onclick="window.print();" role="button">Print</button>
 
 
@@ -105,11 +115,10 @@ if (($rowcount == 0)) {
         </div>
     </div>
 
-    <?php include "include/footer.php"; ?>
+    <?php include "../include/footer.php"; ?>
 
-
-    <script src="assets/jquery-1.11.3-jquery.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="../assets/jquery-1.11.3-jquery.min.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
 
     </body>
     </html>

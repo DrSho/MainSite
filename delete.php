@@ -9,8 +9,9 @@
 error_reporting(0);
 ob_start();
 session_start();
-require_once 'dbcontroller.php';
-require_once 'dashboardcontroller.php';
+include_once("config.php");
+require_once 'include/dbcontroller.php';
+require_once 'include/dashboardcontroller.php';
 
 $db_handle = new DBController();
 $dashboard = new DashboardController();

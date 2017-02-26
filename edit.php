@@ -2,8 +2,9 @@
 error_reporting(0);
 ob_start();
 session_start();
-require_once 'dbcontroller.php';
-require_once 'dashboardcontroller.php';
+include_once("config.php");
+require_once 'include/dbcontroller.php';
+require_once 'include/dashboardcontroller.php';
 
 $db_handle = new DBController();
 $dashboard = new DashboardController();
@@ -66,7 +67,7 @@ if (isset($_POST['btn-update'])) {
 
     <div id="wrapper">
 
-        <?php include("navigation.php") ?>
+        <?php include("include/navigation.php") ?>
 
         <div class="container">
 
@@ -161,7 +162,7 @@ if (isset($_POST['btn-update'])) {
                                                     class="glyphicon glyphicon-edit"></span></span>
                                         <input type="number" class="form-control" id="weight" name="weight"
                                                placeholder="in lbs." min="1"
-                                               max="1000" required value="<?= $row['weight'] ?>">
+                                               max="1000"  value="<?= $row['weight'] ?>">
                                     </div>
                                 </div>
 
@@ -174,7 +175,7 @@ if (isset($_POST['btn-update'])) {
                                                     class="glyphicon glyphicon-edit"></span></span>
                                         <input type="number" class="form-control" id="LDL" name="LDL"
                                                placeholder="Between 50-300 mmol/L"
-                                               min="50" max="300" required value="<?= $row['health_type2_level'] ?>">
+                                               min="50" max="300"  value="<?= $row['health_type2_level'] ?>">
                                     </div>
 
                                 </div>
@@ -188,7 +189,7 @@ if (isset($_POST['btn-update'])) {
                                                     class="glyphicon glyphicon-edit"></span></span>
                                         <input type="number" class="form-control" id="HDL" name="HDL"
                                                placeholder="Between 20-90 mmol/L"
-                                               min="20" max="90" required value="<?= $row['health_type3_level'] ?>">
+                                               min="20" max="90"  value="<?= $row['health_type3_level'] ?>">
                                     </div>
 
                                 </div>
@@ -200,7 +201,7 @@ if (isset($_POST['btn-update'])) {
                                         <span class="input-group-addon"><span
                                                     class="glyphicon glyphicon-edit"></span></span>
                                         <input type="number" class="form-control" id="cholesterol" name="cholesterol"
-                                               placeholder="Between 80-500 mmol/L" required min="80" max="500"
+                                               placeholder="Between 80-500 mmol/L"  min="80" max="500"
                                                value="<?= $row['health_type4_level'] ?>">
                                     </div>
 
@@ -214,7 +215,7 @@ if (isset($_POST['btn-update'])) {
                                                     class="glyphicon glyphicon-edit"></span></span>
                                         <input type="number" class="form-control" id="triglycerides"
                                                name="triglycerides"
-                                               placeholder="Between 0-1000  mmol/L" min="0" max="1000" required
+                                               placeholder="Between 0-1000  mmol/L" min="0" max="1000"
                                                value="<?= $row['health_type1_level'] ?>">
                                     </div>
 
@@ -249,7 +250,7 @@ if (isset($_POST['btn-update'])) {
 
     </div>
 
-    <?php include "footer.php"; ?>
+    <?php include "include/footer.php"; ?>
     <script src="assets/jquery-1.11.3-jquery.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
 

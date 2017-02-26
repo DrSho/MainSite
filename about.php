@@ -2,8 +2,9 @@
 error_reporting(0);
 ob_start();
 session_start();
+include_once("config.php");
 
-require_once 'dbcontroller.php';
+require_once 'include/dbcontroller.php';
 $userName = "Guest";
 $curLoc = basename($_SERVER['PHP_SELF'], ".php");
 
@@ -26,7 +27,7 @@ if (isset($_SESSION['user'])) {
 
 
     <div id="wrapper">
-        <?php include("navigation.php"); ?>
+        <?php include("include/navigation.php"); ?>
         <div class="container">
 
 
@@ -40,7 +41,7 @@ if (isset($_SESSION['user'])) {
 
 
     </div>
-    <?php include "footer.php"; ?>
+    <?php include "include/footer.php"; ?>
     <script src="assets/jquery-1.11.3-jquery.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
 

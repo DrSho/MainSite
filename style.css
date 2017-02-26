@@ -150,6 +150,12 @@ select {
     min-height: 100px;
 }
 
+.team-member {
+    float: left;
+    margin: 15px;
+    position: relative;
+    text-align: center;
+}
 
 
 

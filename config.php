@@ -11,18 +11,11 @@ define('BASE_PATH', str_replace('/include/', '', dirname(__FILE__)));
 define('HTTP_PATH_ROOT', "http://".$_SERVER["HTTP_HOST"]."/drsho/");
 define('INCLUDE_PATH', "http://".$_SERVER["HTTP_HOST"]."/drsho/include/");
 
-//Remote
-//define(DBHOST, "mpwebservicesnet.ipagemysql.com");
-//define(DBUSER, "drsho");
-//define(DBPASS, "metcs633");
+
+//define(DBHOST, "__YOUR_HOST_NAME__");
+//define(DBUSER, "__DB_USER__");
+//define(DBPASS, "__DB_PASSWORD_");
 //define(DBDATABASE, "drsho");
-
-//Localhost
-define(DBHOST, "localhost");
-define(DBUSER, "drsho");
-define(DBPASS, "metcs633");
-define(DBDATABASE, "drsho_drsho");
-
 
 define(TGL, "Triglycerides");
 define(LDL, "LDL");
